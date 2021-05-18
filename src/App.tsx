@@ -6,6 +6,12 @@ import { Fragment } from "react";
 import CssBaseLine from "@material-ui/core/CssBaseline";
 
 /**
+ * Component Imports
+ */
+import Providers from "./components/Providers";
+import Routes from "./components/Routes";
+
+/**
  * Imports component specific css
  */
 import "./App.css";
@@ -17,7 +23,9 @@ const App: React.FC = () => {
   return (
     <Fragment>
       <CssBaseLine />
-      <div>Hello world</div>
+      <Providers>
+        <Routes />
+      </Providers>
     </Fragment>
   );
 };
