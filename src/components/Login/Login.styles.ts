@@ -8,22 +8,30 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
  * Styles the component
  */
 const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    // flexGrow: 1,
+  },
+  body: {
+    marginTop: "0",
+    height: "100%",
+    backgroundColor: theme.palette.primary.main,
+  },
   paper: {
-    marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: 20,
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(2, 0, 1),
+    color: "#fff",
+    backgroundColor: "#ee82ee",
+    "&:hover": {
+      backgroundColor: "#ee82ee73",
+    },
   },
 }));
 

@@ -3,10 +3,8 @@
  */
 import { useStyles } from "./Login.styles";
 
-import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -15,104 +13,120 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 /**
- * Defines the props interface
+ * Components Imports
  */
-export interface LoginProps {
-  text?: string;
-}
+import InputLabel from "../InputLabel";
+import InputPassword from "../InputPassword";
+import InputText from "../InputText";
+import Body from "../Body";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+/**
+ * Imports hooks
+ */
+import { useForm, FormConfig } from "../../hooks";
+
+/**
+ * Defines the form inputs interface
+ */
+interface FormInputs {
+  userName: string;
+  password: string;
 }
 
 /**
  * Displays the component
  */
-const Login: React.FC<LoginProps> = (props) => {
-  const { text } = props;
-
+const Login: React.FC = () => {
   /**
    * Gets the component styles
    */
   const classes = useStyles();
 
+  const handleSubmit = (inputs: FormInputs) => {
+    console.log(inputs);
+  };
+
+  /**
+   * Defines the useForm config
+   */
+  const formConfig: FormConfig<FormInputs> = {
+    defaultValues: {
+      userName: "",
+      password: "",
+    },
+    submitFn: handleSubmit,
+    autoFocus: true,
+  };
+
+  const { inputs, inputsReady, getAutoFocus, submit, handleInputChange } =
+    useForm(formConfig);
+
+  /**
+   * Gets the autoFocus object
+   */
+  const autoFocus = inputsReady && getAutoFocus();
+
+  /**
+   * Gets the input state
+   */
+  const { userName, password } = inputs;
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+    <Body className={classes.body}>
+      <div className={classes.root}>
+        <Container>
+          <div className={classes.paper}>
+            <Typography component="h1" variant="h5">
+              sign in
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={submit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <InputLabel text="Username" htmlFor="userName" />
+                  <InputText
+                    value={userName}
+                    name="userName"
+                    autoFocus={autoFocus}
+                    onChange={handleInputChange}
+                    debounce={inputsReady}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <InputLabel text="Password" htmlFor="password" />
+                  <InputPassword
+                    value={password}
+                    name="password"
+                    autoFocus={autoFocus}
+                    onChange={handleInputChange}
+                    debounce={inputsReady}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox value="keepSignedIn" color="secondary" />
+                    }
+                    label="remember me"
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                sign in
+              </Button>
+            </form>
+          </div>
+        </Container>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+    </Body>
   );
 };
 

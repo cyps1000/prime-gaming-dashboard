@@ -7,19 +7,19 @@ import { Story, Meta } from "@storybook/react";
 /**
  * Component Imports
  */
-import Login from "./Login";
+import Body from "./Body";
 
 export default {
-  title: "Components/Login",
-  component: Login,
+  title: "Components/Body",
+  component: Body,
 } as Meta;
 
 /**
  * Defines the Template
- * @param args LoginProps
+ * @param args BodyProps
  * @returns
  */
-const Template: Story = (args) => <Login {...args} />;
+const Template: Story = (args) => <Body {...args} />;
 
 /**
  * Default case
