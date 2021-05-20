@@ -3,17 +3,16 @@
  */
 import { useStyles } from "./Login.styles";
 
-import Avatar from "@material-ui/core/Avatar";
+/**
+ * Imports Material UI components
+ */
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 
 /**
  * Components Imports
@@ -37,6 +36,29 @@ interface FormInputs {
 }
 
 /**
+ * Initializes the Copyright component
+ */
+function Copyright() {
+  const appName = `Prime Gaming`;
+
+  /**
+   * Gets the component styles
+   */
+  const classes = useStyles();
+
+  return (
+    <Typography variant="body2" className={classes.copyright} align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="#">
+        {appName}
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+/**
  * Displays the component
  */
 const Login: React.FC = () => {
@@ -45,7 +67,10 @@ const Login: React.FC = () => {
    */
   const classes = useStyles();
 
-  const handleSubmit = (inputs: FormInputs) => {
+  /**
+   * Handles the Sign in form
+   */
+  const handleSignIn = (inputs: FormInputs) => {
     console.log(inputs);
   };
 
@@ -57,10 +82,13 @@ const Login: React.FC = () => {
       userName: "",
       password: "",
     },
-    submitFn: handleSubmit,
+    submitFn: handleSignIn,
     autoFocus: true,
   };
 
+  /**
+   * Initializes the useForm hook
+   */
   const { inputs, inputsReady, getAutoFocus, submit, handleInputChange } =
     useForm(formConfig);
 
@@ -77,16 +105,24 @@ const Login: React.FC = () => {
   return (
     <Body className={classes.body}>
       <div className={classes.root}>
-        <Container>
-          <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              sign in
-            </Typography>
-            <form className={classes.form} noValidate onSubmit={submit}>
-              <Grid container spacing={2}>
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h4">
+            Welcome to Prime Gaming Dashboard
+          </Typography>
+          <Typography
+            component="h1"
+            variant="h5"
+            className={classes.signInText}
+          >
+            Sign In
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={submit}>
+            <Grid container xs={12} item justify="center">
+              <Grid item container xs={12} md={6} sm={12} spacing={2}>
                 <Grid item xs={12}>
                   <InputLabel text="Username" htmlFor="userName" />
                   <InputText
+                    required
                     value={userName}
                     name="userName"
                     autoFocus={autoFocus}
@@ -97,6 +133,7 @@ const Login: React.FC = () => {
                 <Grid item xs={12}>
                   <InputLabel text="Password" htmlFor="password" />
                   <InputPassword
+                    required
                     value={password}
                     name="password"
                     autoFocus={autoFocus}
@@ -109,22 +146,25 @@ const Login: React.FC = () => {
                     control={
                       <Checkbox value="keepSignedIn" color="secondary" />
                     }
-                    label="remember me"
+                    label="Remember me for 30 days."
                   />
                 </Grid>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  sign in
+                </Button>
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                sign in
-              </Button>
-            </form>
-          </div>
-        </Container>
+            </Grid>
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
       </div>
     </Body>
   );

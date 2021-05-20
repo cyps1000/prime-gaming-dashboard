@@ -14,6 +14,6 @@ import Body from "./Body";
  */
 describe("Body", () => {
   it("renders the component", () => {
-    // render(<Body />);
+    //render(<Body />);
   });
 });

@@ -139,12 +139,12 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
   /**
    * Handles opening the edit Article Modal
    */
-  const openEditArticleModal = () => openModal("editArticleModal");
+  //const openEditArticleModal = () => openModal("editArticleModal");
 
   /**
    * Handles opening the delete Article Modal
    */
-  const openDeleteArticleModal = () => openModal("deleteArticleModal");
+  //const openDeleteArticleModal = () => openModal("deleteArticleModal");
 
   /**
    * Handles closing the View/Edit/Delete Modal
@@ -179,10 +179,6 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
   useEffect(() => {
     fetchArticles();
   }, []);
-
-  const handleClick = () => {
-    console.log("articles:", articles);
-  };
 
   const handleBulkDelete = (data: TableRowData[]) => {
     console.log("Deleting articles:", data);

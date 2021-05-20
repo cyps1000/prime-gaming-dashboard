@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "center",
     color: theme.palette.secondary.main,
+    paddingTop: "7rem",
+  },
+  signInText: {
+    paddingTop: "4rem",
   },
   form: {
     marginTop: 20,
@@ -28,10 +32,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   submit: {
     margin: theme.spacing(2, 0, 1),
     color: "#fff",
-    backgroundColor: "#ee82ee",
+    backgroundColor: "#02a8b1",
     "&:hover": {
-      backgroundColor: "#ee82ee73",
+      backgroundColor: "#02a8b159",
     },
+  },
+  copyright: {
+    color: theme.palette.secondary.main,
   },
 }));
 
