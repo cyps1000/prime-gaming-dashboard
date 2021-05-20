@@ -8,7 +8,13 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
  * Styles the component
  */
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {},
+  label: {
+    display: "flex",
+    fontFamily: theme.typography.fontFamily,
+    fontSize: 16,
+    height: "auto",
+    marginTop: 8,
+  },
 }));
 
 export { useStyles };
