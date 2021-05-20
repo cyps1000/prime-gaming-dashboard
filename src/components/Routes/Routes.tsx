@@ -8,19 +8,9 @@ import DashboardArticles from "../DashboardArticles";
 import Login from "../Login";
 
 /**
- * Imports the component styles
- */
-import { useStyles } from "./Routes.styles";
-
-/**
  * Displays the component
  */
 const Routes: React.FC = () => {
-  /**
-   * Gets the component styles
-   */
-  const classes = useStyles();
-
   return (
     <Router>
       <Switch>
@@ -31,7 +21,6 @@ const Routes: React.FC = () => {
         <Route path="/">
           <DashboardNav>
             <Switch>
-              {/* Overview page */}
               <Route exact path="/">
                 <h1>Overview</h1>
               </Route>
