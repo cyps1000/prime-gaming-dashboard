@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
  */
 import DashboardNav from "../DashboardNav";
 import DashboardArticles from "../DashboardArticles";
+import DashboardAccounts from "../DashboardAccounts";
 import Login from "../Login";
 
 /**
@@ -24,7 +25,9 @@ const Routes: React.FC = () => {
               <Route exact path="/">
                 <h1>Overview</h1>
               </Route>
-              <Route exact path="/accounts" />
+              <Route exact path="/accounts">
+                <DashboardAccounts />
+              </Route>
               <Route exact path="/messages" />
               <Route exact path="/articles">
                 <DashboardArticles />

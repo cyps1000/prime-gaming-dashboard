@@ -106,15 +106,8 @@ const Login: React.FC = () => {
     <Body className={classes.body}>
       <div className={classes.root}>
         <div className={classes.paper}>
-          <Typography component="h1" variant="h4">
+          <Typography className={classes.title} component="h1" variant="h4">
             Welcome to Prime Gaming Dashboard
-          </Typography>
-          <Typography
-            component="h1"
-            variant="h5"
-            className={classes.signInText}
-          >
-            Sign In
           </Typography>
           <form className={classes.form} noValidate onSubmit={submit}>
             <Grid container xs={12} item justify="center">

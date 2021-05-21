@@ -80,6 +80,7 @@ const DashboardNav: React.FC = (props) => {
    */
   const goToOverview = () => routeTo("/");
   const goToArticles = () => routeTo("/articles");
+  const goToAccounts = () => routeTo("/accounts");
 
   /**
    * Gets the location path
@@ -155,7 +156,13 @@ const DashboardNav: React.FC = (props) => {
             </ListItemIcon>
             <ListItemText primary="Overview" />
           </ListItem>
-          <ListItem button>
+          <ListItem
+            button
+            onClick={goToAccounts}
+            className={clsx({
+              [classes.activeTrue]: checkPathMatch("/accounts"),
+            })}
+          >
             <ListItemIcon>
               <PeopleAltOutlinedIcon />
             </ListItemIcon>
