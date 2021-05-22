@@ -7,7 +7,7 @@ import { Story, Meta } from "@storybook/react";
 /**
  * Component Imports
  */
-import { DynamicTable, DynamicTableProps } from "./DynamicTable";
+import { DynamicTable, DynamicTableProps } from "./index";
 
 export default {
   title: "Components/DynamicTable",

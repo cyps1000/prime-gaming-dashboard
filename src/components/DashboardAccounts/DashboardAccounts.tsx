@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
  * Imports Components
  */
 import DashboardViewAccountModal from "../DashboardViewAccountModal";
-import { TableRowData } from "../DynamicTable/DynamicTable";
+import { TableRowData, TableColumnData } from "../DynamicTable";
 import PrimeTable from "../PrimeTable";
 
 /**
@@ -74,7 +74,7 @@ const DashboardAccounts: React.FC = () => {
   /**
    * Defined the table columns
    */
-  const tableColumns = [
+  const tableColumns: TableColumnData[] = [
     {
       label: "Name",
       rowKey: "name",
@@ -88,8 +88,11 @@ const DashboardAccounts: React.FC = () => {
       searchField: true,
     },
     {
-      labe: "Operations",
+      label: "Operations",
       rowKey: "operations",
+      style: {
+        width: 190,
+      },
     },
   ];
 
@@ -225,7 +228,7 @@ const DashboardAccounts: React.FC = () => {
           "withBulkDelete",
         ]}
         selectKey="id"
-        excluseSelectKeys={["operations"]}
+        excludeSelectKeys={["operations"]}
         orderBy="age"
         order="desc"
       />

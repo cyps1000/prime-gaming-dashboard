@@ -16,7 +16,7 @@ import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
  * Imports the component styles
  */
 import { useStyles } from "./DashboardArticles.styles";
-import { TableRowData } from "../DynamicTable/DynamicTable";
+import { TableRowData, TableColumnData } from "../DynamicTable";
 
 /**
  * Defines the Modals' State interface
@@ -85,12 +85,16 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
   /**
    * Defines the table columns
    */
-  const tableColumns = [
+  const tableColumns: TableColumnData[] = [
     {
       label: "Title",
       rowKey: "title",
       sort: true,
       searchField: true,
+      style: {
+        width: "40%",
+        minWidth: "150px",
+      },
     },
     {
       label: "Author",
@@ -249,7 +253,7 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
           "withBulkDelete",
         ]}
         selectKey="id"
-        excluseSelectKeys={["operations"]}
+        excludeSelectKeys={["operations"]}
         orderBy="age"
         order="desc"
       />
