@@ -21,6 +21,7 @@ export const getApiClient = (config: Config) => {
       if (mock) return "/";
       return process.env.REACT_APP_LOCAL_API;
     }
+    return process.env.REACT_APP_PROD_API;
   };
 
   /**
