@@ -27,11 +27,14 @@ import Body from "../Body";
  */
 import { useForm, FormConfig } from "../../hooks";
 
+import { getApiClient } from "../../utils/api";
+import axios from "axios";
+
 /**
  * Defines the form inputs interface
  */
 interface FormInputs {
-  userName: string;
+  username: string;
   password: string;
 }
 
@@ -70,8 +73,11 @@ const Login: React.FC = () => {
   /**
    * Handles the Sign in form
    */
-  const handleSignIn = (inputs: FormInputs) => {
-    console.log(inputs);
+  const handleSignIn = async (inputs: FormInputs) => {
+    return await axios.post(
+      "http://localhost:3001/v1/auth/login-admin",
+      inputs
+    );
   };
 
   /**
@@ -79,7 +85,7 @@ const Login: React.FC = () => {
    */
   const formConfig: FormConfig<FormInputs> = {
     defaultValues: {
-      userName: "",
+      username: "",
       password: "",
     },
     submitFn: handleSignIn,
@@ -100,7 +106,7 @@ const Login: React.FC = () => {
   /**
    * Gets the input state
    */
-  const { userName, password } = inputs;
+  const { username, password } = inputs;
 
   return (
     <Body className={classes.body}>
@@ -123,8 +129,8 @@ const Login: React.FC = () => {
                   <InputLabel text="Username" htmlFor="userName" />
                   <InputText
                     required
-                    value={userName}
-                    name="userName"
+                    value={username}
+                    name="username"
                     autoFocus={autoFocus}
                     onChange={handleInputChange}
                     debounce={inputsReady}

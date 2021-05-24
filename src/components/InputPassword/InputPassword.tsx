@@ -355,14 +355,6 @@ const InputPassword: React.FC<InputPasswordProps> = (props) => {
   };
 
   /**
-   * Prevents pasting into the input field
-   */
-  const handlePaste = (event: ClipboardEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    return false;
-  };
-
-  /**
    * Shows / Hides the password field
    */
   const toggleShowPassword = () => {
@@ -578,7 +570,6 @@ const InputPassword: React.FC<InputPasswordProps> = (props) => {
         placeholder={placeholder}
         onChange={handleChange}
         onKeyPress={handleKeyPress}
-        onPaste={handlePaste}
         onBlur={handleOnBlur}
         onFocus={handleOnFocus}
         value={displayValue(input)}
