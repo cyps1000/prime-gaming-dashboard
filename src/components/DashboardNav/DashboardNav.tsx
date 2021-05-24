@@ -81,6 +81,7 @@ const DashboardNav: React.FC = (props) => {
   const goToOverview = () => routeTo("/");
   const goToArticles = () => routeTo("/articles");
   const goToAccounts = () => routeTo("/accounts");
+  const logout = () => routeTo("/login");
 
   /**
    * Gets the location path
@@ -201,7 +202,7 @@ const DashboardNav: React.FC = (props) => {
         </List>
         <Divider />
         <List className={classes.list}>
-          <ListItem button>
+          <ListItem button onClick={logout}>
             <ListItemIcon>
               <PowerSettingsNewOutlinedIcon />
             </ListItemIcon>

@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useState } from "react";
 
 /**
  * Dashboard component imports
  */
-import DashboardNav from "../DashboardNav";
-import DashboardArticles from "../DashboardArticles";
-import DashboardAccounts from "../DashboardAccounts";
+import ProtectedRoutes from "../ProtectedRoutes";
 import Login from "../Login";
 
 /**
@@ -19,24 +18,7 @@ const Routes: React.FC = () => {
           <Login />
         </Route>
 
-        <Route path="/">
-          <DashboardNav>
-            <Switch>
-              <Route exact path="/">
-                <h1>Overview</h1>
-              </Route>
-              <Route exact path="/accounts">
-                <DashboardAccounts />
-              </Route>
-              <Route exact path="/messages" />
-              <Route exact path="/articles">
-                <DashboardArticles />
-              </Route>
-              <Route exact path="/moderation" />
-              <Route exact path="/reports" />
-            </Switch>
-          </DashboardNav>
-        </Route>
+        <ProtectedRoutes />
       </Switch>
     </Router>
   );
