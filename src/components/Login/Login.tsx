@@ -82,6 +82,11 @@ const Login: React.FC = () => {
    */
   const { auth, updateAuth } = useAuth();
 
+  /**
+   * Initializes the mock API
+   */
+  const { apiClient } = getApiClient({ mock: false });
+
   console.log(auth);
 
   /**
@@ -100,7 +105,7 @@ const Login: React.FC = () => {
       inputs
     );
     if (response.status === 200) {
-      const { data } = await axios.get("http://localhost:3001/v1/auth", {
+      const { data } = await apiClient.get("http://localhost:3001/v1/auth", {
         withCredentials: true,
       });
       if (data.currentUser) {

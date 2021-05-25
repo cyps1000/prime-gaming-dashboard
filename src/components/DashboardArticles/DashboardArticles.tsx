@@ -40,7 +40,11 @@ export interface DashboardArticlesProps {
 interface Article {
   id: string;
   title: string;
-  author: string;
+  author: {
+    id: string;
+    role: string;
+    username: string;
+  };
   content: string;
   comments: string;
   likes: string;
@@ -169,15 +173,15 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
     });
   };
 
-  const { apiClient } = getApiClient({ mock: true });
+  const { apiClient } = getApiClient({ mock: false });
 
   const [articles, setArticles] = useState<Article[]>([]);
 
   const fetchArticles = async () => {
-    const { data } = await apiClient.get("/v1/articles");
-    const { articles }: { articles: Article[] } = data;
+    const { data } = await apiClient.get("/v1/articles?page=1&limit=50");
+    const { items } = data;
 
-    setArticles(articles);
+    setArticles(items);
   };
 
   useEffect(() => {
@@ -185,7 +189,6 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
   }, []);
 
   const handleBulkDelete = (data: TableRowData[]) => {
-    console.log("Deleting articles:", data);
     const toDeleteIds = data.map((article) => article.id);
     const newArticles = articles.filter(
       (article) => !toDeleteIds.includes(article.id)
@@ -199,6 +202,10 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
 
       return {
         ...article,
+        comments: article.comments.length,
+        likes: article.likes.length,
+        shares: article.shares,
+        author: article.author ? article.author.username : "",
         operations: (
           <div className={classes.operations}>
             <IconButton
