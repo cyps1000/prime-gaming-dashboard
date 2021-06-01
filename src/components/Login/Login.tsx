@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useHistory, Redirect } from "react-router-dom";
 /**
  * Imports the component styles
  */
@@ -25,13 +27,16 @@ import Body from "../Body";
 /**
  * Imports hooks
  */
-import { useForm, FormConfig } from "../../hooks";
+import { useForm, FormConfig, useAuth, useApiClient } from "../../hooks";
+
+import { getApiClient } from "../../utils/api";
+import axios from "axios";
 
 /**
  * Defines the form inputs interface
  */
 interface FormInputs {
-  userName: string;
+  username: string;
   password: string;
 }
 
@@ -67,11 +72,24 @@ const Login: React.FC = () => {
    */
   const classes = useStyles();
 
+  const { auth, setToken } = useAuth();
+
+  /**
+   * Initializes the mock API
+   */
+  const { apiClient } = useApiClient({ mock: false });
+
   /**
    * Handles the Sign in form
    */
-  const handleSignIn = (inputs: FormInputs) => {
-    console.log(inputs);
+  const handleSignIn = async (inputs: FormInputs) => {
+    const response = await apiClient.post(
+      "http://localhost:3001/v1/auth/login-admin",
+      inputs
+    );
+
+    console.log("resp.data:", response.data);
+    setToken(response.data.token);
   };
 
   /**
@@ -79,7 +97,7 @@ const Login: React.FC = () => {
    */
   const formConfig: FormConfig<FormInputs> = {
     defaultValues: {
-      userName: "",
+      username: "",
       password: "",
     },
     submitFn: handleSignIn,
@@ -100,21 +118,18 @@ const Login: React.FC = () => {
   /**
    * Gets the input state
    */
-  const { userName, password } = inputs;
+  const { username, password } = inputs;
+
+  if (auth.isLoggedIn) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Body className={classes.body}>
       <div className={classes.root}>
         <div className={classes.paper}>
-          <Typography component="h1" variant="h4">
+          <Typography className={classes.title} component="h1" variant="h4">
             Welcome to Prime Gaming Dashboard
-          </Typography>
-          <Typography
-            component="h1"
-            variant="h5"
-            className={classes.signInText}
-          >
-            Sign In
           </Typography>
           <form className={classes.form} noValidate onSubmit={submit}>
             <Grid container xs={12} item justify="center">
@@ -123,8 +138,8 @@ const Login: React.FC = () => {
                   <InputLabel text="Username" htmlFor="userName" />
                   <InputText
                     required
-                    value={userName}
-                    name="userName"
+                    value={username}
+                    name="username"
                     autoFocus={autoFocus}
                     onChange={handleInputChange}
                     debounce={inputsReady}

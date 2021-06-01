@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     paddingTop: "7rem",
   },
-  signInText: {
-    paddingTop: "4rem",
+  title: {
+    paddingTop: "6rem",
   },
   form: {
-    marginTop: 20,
+    marginTop: 50,
   },
   submit: {
     margin: theme.spacing(2, 0, 1),

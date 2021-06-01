@@ -1,11 +1,14 @@
+/**
+ * External Imports
+ */
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 /**
- * Dashboard component imports
+ *  Imports components
  */
-import DashboardNav from "../DashboardNav";
-import DashboardArticles from "../DashboardArticles";
+import ProtectedRoutes from "../ProtectedRoutes";
 import Login from "../Login";
+import MessagePopup from "../MessagePopup";
 
 /**
  * Displays the component
@@ -13,27 +16,12 @@ import Login from "../Login";
 const Routes: React.FC = () => {
   return (
     <Router>
+      <MessagePopup />
       <Switch>
         <Route path="/login">
           <Login />
         </Route>
-
-        <Route path="/">
-          <DashboardNav>
-            <Switch>
-              <Route exact path="/">
-                <h1>Overview</h1>
-              </Route>
-              <Route exact path="/accounts" />
-              <Route exact path="/messages" />
-              <Route exact path="/articles">
-                <DashboardArticles />
-              </Route>
-              <Route exact path="/moderation" />
-              <Route exact path="/reports" />
-            </Switch>
-          </DashboardNav>
-        </Route>
+        <ProtectedRoutes />
       </Switch>
     </Router>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useHistory, useLocation, matchPath } from "react-router-dom";
+import { useHistory, useLocation, matchPath, Redirect } from "react-router-dom";
 
 /**
  * Material UI Imports
@@ -27,6 +27,7 @@ import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 import PowerSettingsNewOutlinedIcon from "@material-ui/icons/PowerSettingsNewOutlined";
 import Container from "@material-ui/core/Container";
+import { useApiClient, useAuth } from "../../hooks";
 
 /**
  * Imports the component styles
@@ -48,6 +49,8 @@ const DashboardNav: React.FC = (props) => {
    * Initializes the Drawer state
    */
   const [open, setOpen] = useState(true);
+
+  const { apiClient } = useApiClient({ mock: false, withCredentials: true });
 
   /**
    * Handles opening the drawer
@@ -80,6 +83,7 @@ const DashboardNav: React.FC = (props) => {
    */
   const goToOverview = () => routeTo("/");
   const goToArticles = () => routeTo("/articles");
+  const goToAccounts = () => routeTo("/accounts");
 
   /**
    * Gets the location path
@@ -92,6 +96,17 @@ const DashboardNav: React.FC = (props) => {
   const checkPathMatch = (path: string): boolean => {
     const result = matchPath(location.pathname, path);
     return result ? (result.isExact ? true : false) : false;
+  };
+
+  const { updateAuth } = useAuth();
+
+  const logout = async () => {
+    const { data } = await apiClient.post("/v1/auth/logout");
+    if (data) {
+      updateAuth({ isLoggedIn: false });
+      localStorage.removeItem("prime-token");
+      history.push("/login");
+    }
   };
 
   return (
@@ -155,7 +170,13 @@ const DashboardNav: React.FC = (props) => {
             </ListItemIcon>
             <ListItemText primary="Overview" />
           </ListItem>
-          <ListItem button>
+          <ListItem
+            button
+            onClick={goToAccounts}
+            className={clsx({
+              [classes.activeTrue]: checkPathMatch("/accounts"),
+            })}
+          >
             <ListItemIcon>
               <PeopleAltOutlinedIcon />
             </ListItemIcon>
@@ -194,7 +215,7 @@ const DashboardNav: React.FC = (props) => {
         </List>
         <Divider />
         <List className={classes.list}>
-          <ListItem button>
+          <ListItem button onClick={logout}>
             <ListItemIcon>
               <PowerSettingsNewOutlinedIcon />
             </ListItemIcon>

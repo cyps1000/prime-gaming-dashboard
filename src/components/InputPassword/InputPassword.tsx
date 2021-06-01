@@ -358,8 +358,10 @@ const InputPassword: React.FC<InputPasswordProps> = (props) => {
    * Prevents pasting into the input field
    */
   const handlePaste = (event: ClipboardEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    return false;
+    if (preventPaste) {
+      event.preventDefault();
+      return false;
+    }
   };
 
   /**

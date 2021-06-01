@@ -16,7 +16,8 @@ import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
  * Imports the component styles
  */
 import { useStyles } from "./DashboardArticles.styles";
-import { TableRowData } from "../DynamicTable/DynamicTable";
+import { TableRowData, TableColumnData } from "../DynamicTable";
+import { useApiClient } from "../../hooks";
 
 /**
  * Defines the Modals' State interface
@@ -40,7 +41,11 @@ export interface DashboardArticlesProps {
 interface Article {
   id: string;
   title: string;
-  author: string;
+  author: {
+    id: string;
+    role: string;
+    username: string;
+  };
   content: string;
   comments: string;
   likes: string;
@@ -85,12 +90,16 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
   /**
    * Defines the table columns
    */
-  const tableColumns = [
+  const tableColumns: TableColumnData[] = [
     {
       label: "Title",
       rowKey: "title",
       sort: true,
       searchField: true,
+      style: {
+        width: "40%",
+        minWidth: "150px",
+      },
     },
     {
       label: "Author",
@@ -165,15 +174,15 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
     });
   };
 
-  const { apiClient } = getApiClient({ mock: true });
+  const { apiClient } = useApiClient({ mock: false, withCredentials: true });
 
   const [articles, setArticles] = useState<Article[]>([]);
 
   const fetchArticles = async () => {
-    const { data } = await apiClient.get("/v1/articles");
-    const { articles }: { articles: Article[] } = data;
+    const { data } = await apiClient.get("/v1/articles?page=1&limit=50");
+    const { items } = data;
 
-    setArticles(articles);
+    setArticles(items);
   };
 
   useEffect(() => {
@@ -181,7 +190,6 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
   }, []);
 
   const handleBulkDelete = (data: TableRowData[]) => {
-    console.log("Deleting articles:", data);
     const toDeleteIds = data.map((article) => article.id);
     const newArticles = articles.filter(
       (article) => !toDeleteIds.includes(article.id)
@@ -195,6 +203,10 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
 
       return {
         ...article,
+        comments: article.comments.length,
+        likes: article.likes.length,
+        shares: article.shares,
+        author: article.author ? article.author.username : "",
         operations: (
           <div className={classes.operations}>
             <IconButton
@@ -219,11 +231,7 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
 
   useEffect(() => {
     if (articles.length > 0) {
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
+      setLoading(false);
     }
   }, [articles]);
 
@@ -249,7 +257,7 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
           "withBulkDelete",
         ]}
         selectKey="id"
-        excluseSelectKeys={["operations"]}
+        excludeSelectKeys={["operations"]}
         orderBy="age"
         order="desc"
       />

@@ -1,7 +1,13 @@
+import { useState } from "react";
 /**
  * Imports Material UI components
  */
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+/**
+ * Imports components
+ */
+import { AuthProvider, MessageProvider } from "../../hooks";
 
 /**
  * Imports themes
@@ -19,7 +25,13 @@ const Providers: React.FC = (props) => {
    */
   const getTheme = () => createMuiTheme(mainTheme);
 
-  return <ThemeProvider theme={getTheme()}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={getTheme()}>
+      <AuthProvider>
+        <MessageProvider>{children}</MessageProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  );
 };
 
 export default Providers;

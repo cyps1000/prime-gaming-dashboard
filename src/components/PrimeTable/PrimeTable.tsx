@@ -33,7 +33,7 @@ export interface PrimeTableProps {
   onAdd?: DynamicTableProps["config"]["onAdd"];
   onBulkDelete?: DynamicTableProps["config"]["onBulkDelete"];
   selectKey?: string;
-  excluseSelectKeys?: string[];
+  excludeSelectKeys?: string[];
   orderBy: string;
   order: SortOrder;
   pagination?: TablePaginationProps;
@@ -52,7 +52,7 @@ const PrimeTable: React.FC<PrimeTableProps> = (props) => {
     onAdd,
     onBulkDelete,
     selectKey,
-    excluseSelectKeys,
+    excludeSelectKeys,
     order,
     orderBy,
   } = props;
@@ -150,7 +150,7 @@ const PrimeTable: React.FC<PrimeTableProps> = (props) => {
         materialProps: getMaterialProps(),
         plugins: getPluginsConfig(),
         selectKey,
-        excluseSelectKeys,
+        excludeSelectKeys,
         order,
         orderBy,
       },
