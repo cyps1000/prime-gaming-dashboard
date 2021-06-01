@@ -1,6 +1,9 @@
-import { Route, Switch } from "react-router-dom";
-import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+/**
+ * External Imports
+ */
+import { Route, Switch, Redirect } from "react-router-dom";
 
 /**
  * Dashboard component imports
@@ -12,67 +15,80 @@ import DashboardAccounts from "../DashboardAccounts";
 /**
  * Imports hooks
  */
-import { useAuth } from "../../hooks";
-
-/**
- * Imports the component styles
- */
-import { useStyles } from "./ProtectedRoutes.styles";
-
-/**
- * Defines the props interface
- */
-export interface ProtectedRoutesProps {
-  text?: string;
-}
+import { useAuth, useApiClient } from "../../hooks";
 
 /**
  * Displays the component
  */
-const ProtectedRoutes: React.FC<ProtectedRoutesProps> = (props) => {
-  const { text } = props;
+const ProtectedRoutes: React.FC = () => {
+  /**
+   * Initializes the unauthorized state
+   */
+  const [unauthorized, setUnauthorized] = useState(false);
 
   /**
-   * Gets the component styles
+   * Gets the auth
    */
-  const classes = useStyles();
+  const { token, updateAuth } = useAuth();
 
   /**
-   *
+   * Gets the api client
    */
-  const { auth } = useAuth();
+  const { apiClient } = useApiClient({ withCredentials: true, mock: false });
 
+  /**
+   * Handles checking if the user is logged in
+   */
   const checkIfLoggedIn = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:3001/v1/auth", {
-        headers: {},
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+    const { data } = await apiClient.get("/v1/auth");
+
+    if (!data) {
+      setUnauthorized(true);
+      updateAuth({ isLoggedIn: false });
+      return;
     }
+
+    updateAuth({ isLoggedIn: true });
   };
 
+  /**
+   * Handles checking if the user is logged in
+   */
   useEffect(() => {
     checkIfLoggedIn();
-  }, []);
+  }, [token]);
+
+  /**
+   * Handles updating the unauthorized state
+   */
+  useEffect(() => {
+    if (!token) setUnauthorized(true);
+  }, [token]);
+
+  if (unauthorized) return <Redirect to="/login" />;
 
   return (
     <Route path="/">
       <DashboardNav>
         <Switch>
           <Route exact path="/">
-            <h1>Overview</h1>
+            <h1> DashboardOverview </h1>
           </Route>
           <Route exact path="/accounts">
             <DashboardAccounts />
           </Route>
-          <Route exact path="/messages" />
+          <Route exact path="/messages">
+            <h1> DashboardMessages </h1>
+          </Route>
           <Route exact path="/articles">
             <DashboardArticles />
           </Route>
-          <Route exact path="/moderation" />
-          <Route exact path="/reports" />
+          <Route exact path="/moderation">
+            <h1> DashboardModeration </h1>
+          </Route>
+          <Route exact path="/reports">
+            <h1> DashboardReports </h1>
+          </Route>
         </Switch>
       </DashboardNav>
     </Route>

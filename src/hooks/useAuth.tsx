@@ -1,4 +1,10 @@
-import { useContext, createContext, ReactNode, useState } from "react";
+import {
+  useContext,
+  createContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from "react";
 
 /**
  * Hooks
@@ -6,24 +12,22 @@ import { useContext, createContext, ReactNode, useState } from "react";
 import useLocalStorage from "./useLocalStorage/useLocalStorage";
 
 interface Auth {
-  isLoggedIn: boolean;
+  isLoggedIn?: boolean;
+}
+interface ProviderValue {
+  token: string;
+  auth: Auth;
+  updateAuth: (auth: Auth) => void;
+  setToken: (value: string | ((val: string) => string)) => void;
 }
 
-/**
- * Provides the state of the modal
- * By default it will be open
- */
-const useAuthHook = () => {
-  const [auth, setAuth] = useState<Auth>({ isLoggedIn: false });
-
-  const updateAuth = (auth: Auth) => {
-    setAuth(auth);
-  };
-
-  return {
-    auth,
-    updateAuth,
-  };
+const defaultValue: ProviderValue = {
+  token: "",
+  auth: {
+    isLoggedIn: false,
+  },
+  updateAuth: (auth: Auth) => {},
+  setToken: (value: string | ((val: string) => string)) => {},
 };
 
 /**
@@ -32,12 +36,7 @@ const useAuthHook = () => {
  * - This serves as a cache.
  * - Rather than each instance of the hook fetch the current state, the hook simply calls useContext to get the data from the top level provider
  */
-const authContext = createContext({
-  auth: {
-    isLoggedIn: false,
-  },
-  updateAuth: (auth: Auth) => {},
-});
+const authContext = createContext<ProviderValue>(defaultValue);
 
 type AuthProviderType = (props: { children?: ReactNode }) => any;
 
@@ -50,16 +49,31 @@ type AuthProviderType = (props: { children?: ReactNode }) => any;
 const AuthProvider: AuthProviderType = (props) => {
   const { children } = props;
 
-  const data = useAuthHook();
+  const [token, setToken] = useLocalStorage<string>("prime-token");
+  const [auth, setAuth] = useState<Auth>(defaultValue.auth);
+
+  const updateAuth = (auth: Auth) => {
+    setAuth(auth);
+  };
+
+  useEffect(() => {
+    updateAuth({ isLoggedIn: !!token });
+  }, [token]);
 
   return (
-    <authContext.Provider value={{ ...data }}>{children}</authContext.Provider>
+    <authContext.Provider
+      value={
+        {
+          token,
+          auth,
+          setToken,
+          updateAuth,
+        } as ProviderValue
+      }
+    >
+      {children}
+    </authContext.Provider>
   );
-};
-
-type useAuthHookType = () => {
-  auth: Auth;
-  updateAuth: (auth: Auth) => void;
 };
 
 /**
@@ -68,8 +82,6 @@ type useAuthHookType = () => {
  * - Returns the  context / object
  * - To be used inside components
  */
-const useAuth: useAuthHookType = () => {
-  return useContext(authContext);
-};
+const useAuth = () => useContext(authContext);
 
 export { useAuth, AuthProvider };

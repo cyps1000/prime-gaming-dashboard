@@ -1,4 +1,3 @@
-import { getApiClient } from "../../utils/api";
 import { useState, useEffect } from "react";
 
 /**
@@ -16,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import VisibilityOutlinedIcon from "@material-ui/icons/VisibilityOutlined";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined";
+import { useApiClient } from "../../hooks";
 
 /**
  * Imports the component styles
@@ -131,7 +131,7 @@ const DashboardAccounts: React.FC = () => {
   /**
    * Initializes the mock API
    */
-  const { apiClient } = getApiClient({ mock: true });
+  const { apiClient } = useApiClient({ mock: false });
 
   /**
    * Initialized the users state
@@ -156,7 +156,6 @@ const DashboardAccounts: React.FC = () => {
    * Handles deleting multiple users at once
    */
   const handleBulkDelete = (data: TableRowData[]) => {
-    console.log("Deleting users: ", data);
     const toDeleteIds = data.map((user) => user.id);
     const newUsers = users.filter((user) => !toDeleteIds.includes(user.id));
     setUsers(newUsers);
@@ -197,7 +196,7 @@ const DashboardAccounts: React.FC = () => {
    * Inits the timer after which the Users appear
    */
   useEffect(() => {
-    if (users.length > 0) {
+    if (users && users.length > 0) {
       const timer = setTimeout(() => {
         setLoading(false);
       }, 2000);

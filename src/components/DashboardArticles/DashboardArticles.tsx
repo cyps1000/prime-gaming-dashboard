@@ -17,6 +17,7 @@ import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
  */
 import { useStyles } from "./DashboardArticles.styles";
 import { TableRowData, TableColumnData } from "../DynamicTable";
+import { useApiClient } from "../../hooks";
 
 /**
  * Defines the Modals' State interface
@@ -173,7 +174,7 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
     });
   };
 
-  const { apiClient } = getApiClient({ mock: false });
+  const { apiClient } = useApiClient({ mock: false, withCredentials: true });
 
   const [articles, setArticles] = useState<Article[]>([]);
 
@@ -230,11 +231,7 @@ const DashboardArticles: React.FC<DashboardArticlesProps> = (props) => {
 
   useEffect(() => {
     if (articles.length > 0) {
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
+      setLoading(false);
     }
   }, [articles]);
 

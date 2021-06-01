@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 /**
  * Imports the component styles
  */
@@ -27,7 +27,7 @@ import Body from "../Body";
 /**
  * Imports hooks
  */
-import { useForm, FormConfig, useAuth } from "../../hooks";
+import { useForm, FormConfig, useAuth, useApiClient } from "../../hooks";
 
 import { getApiClient } from "../../utils/api";
 import axios from "axios";
@@ -72,47 +72,24 @@ const Login: React.FC = () => {
    */
   const classes = useStyles();
 
-  /**
-   * Gets the history object
-   */
-  const history = useHistory();
-
-  /**
-   *
-   */
-  const { auth, updateAuth } = useAuth();
+  const { auth, setToken } = useAuth();
 
   /**
    * Initializes the mock API
    */
-  const { apiClient } = getApiClient({ mock: false });
-
-  console.log(auth);
-
-  /**
-   * Handles routing
-   */
-  const routeTo = (url: string) => {
-    history.push(url);
-  };
+  const { apiClient } = useApiClient({ mock: false });
 
   /**
    * Handles the Sign in form
    */
   const handleSignIn = async (inputs: FormInputs) => {
-    const response = await axios.post(
+    const response = await apiClient.post(
       "http://localhost:3001/v1/auth/login-admin",
       inputs
     );
-    if (response.status === 200) {
-      const { data } = await apiClient.get("http://localhost:3001/v1/auth", {
-        withCredentials: true,
-      });
-      if (data.currentUser) {
-        updateAuth({ isLoggedIn: true });
-        routeTo("/");
-      }
-    }
+
+    console.log("resp.data:", response.data);
+    setToken(response.data.token);
   };
 
   /**
@@ -142,6 +119,10 @@ const Login: React.FC = () => {
    * Gets the input state
    */
   const { username, password } = inputs;
+
+  if (auth.isLoggedIn) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Body className={classes.body}>

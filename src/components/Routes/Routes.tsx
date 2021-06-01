@@ -1,11 +1,14 @@
+/**
+ * External Imports
+ */
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { useState } from "react";
 
 /**
- * Dashboard component imports
+ *  Imports components
  */
 import ProtectedRoutes from "../ProtectedRoutes";
 import Login from "../Login";
+import MessagePopup from "../MessagePopup";
 
 /**
  * Displays the component
@@ -13,11 +16,11 @@ import Login from "../Login";
 const Routes: React.FC = () => {
   return (
     <Router>
+      <MessagePopup />
       <Switch>
         <Route path="/login">
           <Login />
         </Route>
-
         <ProtectedRoutes />
       </Switch>
     </Router>
