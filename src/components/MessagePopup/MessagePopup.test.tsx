@@ -10,15 +10,6 @@ import { render } from "@testing-library/react";
 import MessagePopup from "./MessagePopup";
 
 /**
- * Mocking the useTranslation hook
- * @see https://github.com/i18next/react-i18next/issues/876
- *
- */
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
-}));
-
-/**
  * Default test
  */
 describe("MessagePopup", () => {
